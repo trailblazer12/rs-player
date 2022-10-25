@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<title>Blanche_fleur - Cyberangel</title>
+		<script src="js/jquery.js"></script>
+		<style>
+			div{
+				width:550px;
+				height:500px;
+				margin:0 auto;
+				overflow:hidden;
+			}
+			ul{
+				transition-duration: 600ms;
+			}
+			ul, li{
+				list-style:none;
+				padding: 0;
+				margin: 0;
+			}
+			li.on{
+				color: red;
+			}
+			p{
+				overflow: hidden;
+				text-overflow: ellipsis;
+				height: 20px;
+				line-height: 20px;
+				-webkit-line-clamp: 1;
+				-webkit-box-orient: vertical;
+				display: -webkit-box;
+				text-align: center;
+				margin-top: 0;
+				margin-bottom: 20px;
+			}
+			audio{
+				margin-top: 10px;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>RS Music player</h3>
+		<div>
+			<ul id="lrclist" style="transform: translateY(350px);">
+				
+			</ul>
+		</div>
+		<audio id="audio" src="Blanche_fleur - Cyberangel.mp3" controls="controls" autoplay="true"></audio>
+		
+		<script>
+		var lrcJSON = {
+"[00:00.000]":"作词 : Blanche_fleur",
+"[00:01.000]":"作曲 : Blanche_fleur",
+"[00:02.000]":"编曲 : Blanche_fleur",
+"[00:29.806]":"Corrupt binary codes infecting my mind",
+"[00:30.806]":"错乱的代码侵蚀着意识",
+"[00:33.868]":"perform invocation with numbing freeze",
+"[00:34.868]":"麻木冰冷地执行调用",
+"[00:37.237]":"Querying for a variable and seizing the time",
+"[00:38.237]":"查询一个变量并绑定时间",
+"[00:41.037]":"to recompile and trigger my destiny",
+"[00:42.037]":"去重新编译、触发命运",
+"[00:47.154]":"Though my wings’ve been bloodstained and could never rid",
+"[00:48.154]":"即使双翼早已溅上无法洗净的血污",
+"[00:50.943]":"I'll try hard to soar to the heaven I dreamed",
+"[00:51.943]":"为了梦中彼岸，我也要全力飞翔",
+"[00:54.561]":"There is no exception in this library",
+"[00:55.561]":"这个库不会报出“异常”",
+"[00:58.408]":"for I know I will always go with you",
+"[00:59.408]":"因为我知道，我永远会与你同行",
+"[01:17.813]":"Superhot projectiles pierce the wind",
+"[01:18.813]":"炽热的弹头撕裂疾风",
+"[01:21.771]":"I charged up my armor into lightspeed",
+"[01:22.771]":"我为战甲充能，直至飞驰如光",
+"[01:25.229]":"Querying for a variable and seizing the time",
+"[01:26.229]":"查询一个变量并绑定时间",
+"[01:29.101]":"in a new day coming not so far away",
+"[01:30.101]":"在全新而不遥远的未来",
+"[01:34.909]":"Though my wings’ve been bloodstained and could never rid",
+"[01:35.909]":"即使双翼早已溅上无法洗净的血污",
+"[01:38.612]":"I'll try hard to soar to the heaven I dreamed",
+"[01:39.612]":"为了梦中彼岸，我要全力飞翔",
+"[01:42.615]":"There is no exception in this library",
+"[01:43.615]":"这个库不会报出“异常”",
+"[01:46.334]":"for I know I will always go with you",
+"[01:47.334]":"因为我知道，我永远会与你同行",
+"[02:05.890]":"Though my wings’ve been bloodstained and could never rid",
+"[02:06.890]":"即使双翼早已溅上无法摆脱的血污",
+"[02:09.450]":"I'll try hard to soar to the heaven I dreamed",
+"[02:10.450]":"为了梦中彼岸，我要全力飞翔",
+"[02:13.250]":"There is no exception in this library",
+"[02:14.250]":"这个库不会报出“异常”",
+"[02:16.963]":"for I know I will always go with you",
+"[02:17.963]":"因为我知道，我永远会与你同行",
+"[02:21.075]":"Though my wings’ve been bloodstained and could never rid",
+"[02:22.075]":"即使双翼早已溅上无法摆脱的血污",
+"[02:24.787]":"I'll try hard to soar to the heaven I dreamed",
+"[02:25.787]":"为了梦中彼岸，我要全力飞翔",
+"[02:28.603]":"There is no exception in this library",
+"[02:29.603]":"这个库不会报出“异常”",
+"[02:32.402]":"for I know I will always go with my heart",
+"[02:33.402]":"因为我知道，我永远会与心同行",
+	};
+		
+		
+		var lrcTime = [];
+		var ul = $("#lrclist")[0];
+		
+		var i = 0;
+		$.each(lrcJSON, function(key, value) {
+			lrcTime[i++] = parseFloat(key.substr(1,3)) * 60 + parseFloat(key.substring(4,10));
+			ul.innerHTML += "<li><p>"+lrcJSON[key]+"</p></li>";
+		});
+		lrcTime[lrcTime.length] = lrcTime[lrcTime.length-1] + 3;
+		
+		
+		var $li = $("#lrclist>li");
+		
+		var currentLine = 0;
+		var currentTime;
+		var audio = document.getElementById("audio");
+		var ppxx;
+		
+		audio.ontimeupdate = function() {
+			currentTime = audio.currentTime;
+			for (j=currentLine, len=lrcTime.length; j<len; j++){
+				if (currentTime<lrcTime[j+1] && currentTime>lrcTime[j]){
+					currentLine =  j;
+					ppxx = 250-(currentLine*32);
+					ul.style.transform = "translateY("+ppxx+"px)";
+					$li.get(currentLine-1).className="";
+					console.log("on"+currentLine);
+					$li.get(currentLine).className="on";
+					break;
+				}
+			}
+		};
+		
+		audio.onseeked = function() {
+			currentTime = audio.currentTime;
+			console.log("  off"+currentLine);
+			$li.get(currentLine).className="";
+			for (k=0, len=lrcTime.length; k<len; k++){
+				if (currentTime<lrcTime[k+1] && currentTime<lrcTime[k]){
+					currentLine =  k;
+					break;
+				}
+			}
+		};
+		
+		</script>
+		<img src="1.jpeg" width="100%">
+	</body>
+</html>
